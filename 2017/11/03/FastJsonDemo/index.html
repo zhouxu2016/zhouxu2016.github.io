@@ -20,7 +20,7 @@
 <meta property="og:description" content="前言FastJson的介绍:JSON协议使用方便，越来越流行,JSON的处理器有很多,这里我介绍一下FastJson,FastJson是阿里的开源框架,被不少企业使用,是一个极其优秀的Json框架,Github地址: FastJson FastJson的特点:1.FastJson数度快,无论序列化和反序列化,都是当之无愧的fast2.功能强大(支持普通JDK类包括任意Java Bean Cl">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/nd86ybU.jpg">
-<meta property="og:updated_time" content="2017-11-10T08:05:35.411Z">
+<meta property="og:updated_time" content="2017-11-10T08:23:22.033Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高性能JSON框架之FastJson的简单使用">
 <meta name="twitter:description" content="前言FastJson的介绍:JSON协议使用方便，越来越流行,JSON的处理器有很多,这里我介绍一下FastJson,FastJson是阿里的开源框架,被不少企业使用,是一个极其优秀的Json框架,Github地址: FastJson FastJson的特点:1.FastJson数度快,无论序列化和反序列化,都是当之无愧的fast2.功能强大(支持普通JDK类包括任意Java Bean Cl">
@@ -101,11 +101,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -121,7 +121,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -133,11 +133,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Beiträge',
-            PAGES: 'Seiten',
-            CATEGORIES: 'Kategorien',
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
             TAGS: 'Tags',
-            UNTITLED: '(Unbenannt)',
+            UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -224,6 +224,10 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 复杂json对象到JavaBean_obj的转换</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testComplexJSONObjectToJavaBean</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">//已知复杂json对象</span></div><div class="line">    JSONObject jsonObject = JSONObject.parseObject(COMPLEX_JSON_STR);</div><div class="line"></div><div class="line">	<span class="comment">//第一种方式,使用TypeReference&lt;T&gt;类,由于其构造方法使用protected进行修饰,故创建其子类</span></div><div class="line">    Teacher teacher = JSONObject.parseObject(jsonObject.toJSONString(), <span class="keyword">new</span> TypeReference&lt;Teacher&gt;() &#123;&#125;);</div><div class="line">    System.out.println(teacher);</div><div class="line"></div><div class="line">	<span class="comment">//第二种方式,使用Gson的思想</span></div><div class="line">    Teacher teacher1 = JSONObject.parseObject(jsonObject.toJSONString(), Teacher.class);</div><div class="line">    System.out.println(teacher1);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p>本篇博客的源码都在我的Github上,<a href="https://github.com/zhouxu2016/ALiFastJson" target="_blank" rel="external">FastJsonDemo</a>,欢迎大家Fork and Star!</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>好啦,FastJson的基本用法就介绍完了,送人玫瑰,手留余香,学习使我快乐,分享让大家快乐,欢迎大家点赞收藏噢!</p>
+<p><div class="social-share"></div></p>
+<p><link rel="stylesheet" href="dist/css/share.min.css"></p>
+<script src="node_modules/social-share.js/dist/js/social-share.min.js"></script>
+
 
       
     </div>
@@ -266,7 +270,7 @@
   
   
     <a href="/2017/11/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Hello World</div>
     </a>
   
@@ -279,7 +283,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Inhalt</strong>
+    <strong class="toc-title">Contents</strong>
     
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FastJson的介绍"><span class="nav-number">1.1.</span> <span class="nav-text">FastJson的介绍:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FastJson的特点"><span class="nav-number">1.2.</span> <span class="nav-text">FastJson的特点:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FastJson的简单说明"><span class="nav-number">1.3.</span> <span class="nav-text">FastJson的简单说明:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastJson的用法"><span class="nav-number">2.</span> <span class="nav-text">FastJson的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON格式字符串与JSON对象之间的转换"><span class="nav-number">2.1.</span> <span class="nav-text">JSON格式字符串与JSON对象之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-简单对象型与JSONObject之间的转换"><span class="nav-number">2.1.1.</span> <span class="nav-text">json字符串-简单对象型与JSONObject之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-数组类型-与JSONArray之间的转换"><span class="nav-number">2.1.2.</span> <span class="nav-text">json字符串(数组类型)与JSONArray之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复杂json格式字符串与JSONObject之间的转换"><span class="nav-number">2.1.3.</span> <span class="nav-text">复杂json格式字符串与JSONObject之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON格式字符串与javaBean之间的转换"><span class="nav-number">2.2.</span> <span class="nav-text">JSON格式字符串与javaBean之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-简单对象型与javaBean之间的转换"><span class="nav-number">2.2.1.</span> <span class="nav-text">json字符串-简单对象型与javaBean之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-数组类型与javaBean之间的转换"><span class="nav-number">2.2.2.</span> <span class="nav-text">json字符串-数组类型与javaBean之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复杂json格式字符串与与javaBean之间的转换"><span class="nav-number">2.2.3.</span> <span class="nav-text">复杂json格式字符串与与javaBean之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#javaBean与json对象间的之间的转换"><span class="nav-number">2.3.</span> <span class="nav-text">javaBean与json对象间的之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单javaBean与json对象之间的转换"><span class="nav-number">2.3.1.</span> <span class="nav-text">简单javaBean与json对象之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaList与JsonArray之间的转换"><span class="nav-number">2.3.2.</span> <span class="nav-text">JavaList与JsonArray之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂JavaBean-obj与json对象之间的转换"><span class="nav-number">2.4.</span> <span class="nav-text">复杂JavaBean_obj与json对象之间的转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">3.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol>
     
@@ -291,13 +295,6 @@
       
       <footer id="footer">
   
-
-
-    <div class="social-share"></div>
-
-    <link rel="stylesheet" href="dist/css/share.min.css">
-
-    <script src="node_modules/social-share.js/dist/js/social-share.min.js"></script>
 
 
   <div class="container">

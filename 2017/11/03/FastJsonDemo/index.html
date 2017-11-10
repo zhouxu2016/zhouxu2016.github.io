@@ -101,11 +101,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -121,7 +121,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -133,11 +133,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -270,7 +270,7 @@
   
   
     <a href="/2017/11/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">Hello World</div>
     </a>
   
@@ -283,7 +283,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">Inhalt</strong>
     
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FastJson的介绍"><span class="nav-number">1.1.</span> <span class="nav-text">FastJson的介绍:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FastJson的特点"><span class="nav-number">1.2.</span> <span class="nav-text">FastJson的特点:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FastJson的简单说明"><span class="nav-number">1.3.</span> <span class="nav-text">FastJson的简单说明:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastJson的用法"><span class="nav-number">2.</span> <span class="nav-text">FastJson的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON格式字符串与JSON对象之间的转换"><span class="nav-number">2.1.</span> <span class="nav-text">JSON格式字符串与JSON对象之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-简单对象型与JSONObject之间的转换"><span class="nav-number">2.1.1.</span> <span class="nav-text">json字符串-简单对象型与JSONObject之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-数组类型-与JSONArray之间的转换"><span class="nav-number">2.1.2.</span> <span class="nav-text">json字符串(数组类型)与JSONArray之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复杂json格式字符串与JSONObject之间的转换"><span class="nav-number">2.1.3.</span> <span class="nav-text">复杂json格式字符串与JSONObject之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON格式字符串与javaBean之间的转换"><span class="nav-number">2.2.</span> <span class="nav-text">JSON格式字符串与javaBean之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-简单对象型与javaBean之间的转换"><span class="nav-number">2.2.1.</span> <span class="nav-text">json字符串-简单对象型与javaBean之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json字符串-数组类型与javaBean之间的转换"><span class="nav-number">2.2.2.</span> <span class="nav-text">json字符串-数组类型与javaBean之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复杂json格式字符串与与javaBean之间的转换"><span class="nav-number">2.2.3.</span> <span class="nav-text">复杂json格式字符串与与javaBean之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#javaBean与json对象间的之间的转换"><span class="nav-number">2.3.</span> <span class="nav-text">javaBean与json对象间的之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单javaBean与json对象之间的转换"><span class="nav-number">2.3.1.</span> <span class="nav-text">简单javaBean与json对象之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaList与JsonArray之间的转换"><span class="nav-number">2.3.2.</span> <span class="nav-text">JavaList与JsonArray之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂JavaBean-obj与json对象之间的转换"><span class="nav-number">2.4.</span> <span class="nav-text">复杂JavaBean_obj与json对象之间的转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">3.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol>
     
@@ -295,7 +295,6 @@
       
       <footer id="footer">
   
-
 
   <div class="container">
 
@@ -312,7 +311,6 @@
 		</div>
 
   </div>
-
 
 </footer>
 

@@ -100,11 +100,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -120,7 +120,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -132,11 +132,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -178,9 +178,9 @@
             <!-- 
             <div id='tag_cloud' class="tags">
                 
-                    <a href="#Study" title="Study" rel="1">Study</a>
-                
                     <a href="#Json" title="Json" rel="1">Json</a>
+                
+                    <a href="#Study" title="Study" rel="1">Study</a>
                 
             </div> 
             -->
@@ -273,6 +273,32 @@
 
   </div>
 
+
+  
+    <div class="-mob-share-ui-button -mob-share-open">分享</div>
+
+    <div class="-mob-share-ui" style="display: none">
+
+        <ul class="-mob-share-list">
+
+            <li class="-mob-share-qq"><p>QQ好友</p></li>
+            <li class="-mob-share-qzone"><p>QQ空间</p></li>
+            <li class="-mob-share-facebook"><p>Facebook</p></li>
+            <li class="-mob-share-twitter"><p>Twitter</p></li>
+            <li class="-mob-share-weibo"><p>新浪微博</p></li>
+            <li class="-mob-share-douban"><p>豆瓣</p></li>
+            
+        </ul>
+
+        <div class="-mob-share-close">取消</div>
+
+    </div>
+
+    <div class="-mob-share-ui-bg"></div>
+
+    <script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=你的appkey"></script>
+
+
 </footer>
 
 
@@ -290,9 +316,6 @@
       contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
     }
 </script>
-
-
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"0","bdPos":"right","bdTop":"100"},"image":{"viewList":["weixin","sqq","fbook","twi","qzone","tsina","tqq","renren"],"viewText":"分享到：","viewSize":"16"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
     </div>
     <!-- <nav id="mobile-nav">
   

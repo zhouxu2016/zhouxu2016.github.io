@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>executorservice的理解与简单使用 | ZhouXu&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="线程池创建" />
+  
+  
+  
+  
+  <meta name="description" content="### 前言: ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个 ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的 ExecutorService 的实现就是一个线程池的实现。### ExecutorService 样例:这里有一个简单的使">
+<meta name="keywords" content="线程池创建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ExecutorService的理解与简单使用">
+<meta property="og:url" content="https://zhouxu2016.github.io/2017/11/23/ExecutorService/index.html">
+<meta property="og:site_name" content="ZhouXu&#39;Blog">
+<meta property="og:description" content="### 前言: ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个 ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的 ExecutorService 的实现就是一个线程池的实现。### ExecutorService 样例:这里有一个简单的使">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/vQRNp6P.jpg">
+<meta property="og:image" content="http://static.oschina.net/uploads/space/2013/1119/165710_YOvh_136226.png">
+<meta property="og:image" content="https://i.imgur.com/WLJdMpM.png">
+<meta property="og:updated_time" content="2017-11-23T11:19:02.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ExecutorService的理解与简单使用">
+<meta name="twitter:description" content="### 前言: ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个 ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的 ExecutorService 的实现就是一个线程池的实现。### ExecutorService 样例:这里有一个简单的使">
+<meta name="twitter:image" content="https://i.imgur.com/vQRNp6P.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="ZhouXu&#39;Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/logo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/logo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
+            TAGS: 'Tags',
+            UNTITLED: '(Unbenannt)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ExecutorService" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ExecutorService的理解与简单使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/23/ExecutorService/" class="article-date">
+	  <time datetime="2017-11-23T07:54:11.375Z" itemprop="datePublished">2017-11-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/vQRNp6P.jpg" alt="wanglikun"></center><br><br><br><br>### 前言: ###<br><br>接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个 ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的 ExecutorService 的实现就是一个线程池的实现。<br><br>### ExecutorService 样例:<br><br>这里有一个简单的使用Java 实现的 ExectorService 样例：<br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeRunnable</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="comment">//       创建固定线程数量的线程池</span></div><div class="line">        executorService2 = Executors.newFixedThreadPool(<span class="number">10</span>);</div><div class="line"><span class="comment">//        异步执行线程任务</span></div><div class="line">        executorService2.execute(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                System.out.println(<span class="string">"Asynchronous task"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"><span class="comment">//        等待所有的线程执行线程任务完毕后,关闭线程</span></div><div class="line">        executorService2.shutdown();</div><div class="line">    &#125;</div></pre></td></tr></table></figure><br><br><a id="more"></a><br><br>首先使用 newFixedThreadPool() 工厂方法创建一个 ExecutorService ，上述代码创建了一个可以容纳10个线程任务的线程池。其次，向 execute() 方法中传递一个异步的 Runnable 接口的实现，这样做会让 ExecutorService 中的某个线程执行这个Runnable 线程。<br><br>#### 任务的委托(Task Delegation)<br><br>下方展示了一个线程的把任务委托异步执行的ExecutorService的示意图。<br><br><div style="margin-top: 2rem"></div>
+
+<center><br><br><img src="http://static.oschina.net/uploads/space/2013/1119/165710_YOvh_136226.png" alt=""><br><br></center>
+
+<p>一旦线程把任务委托给 ExecutorService，该线程就会继续执行与运行任务无关的其它任务。</p>
+<h4 id="ExecutorService-的实现"><a href="#ExecutorService-的实现" class="headerlink" title="ExecutorService 的实现"></a>ExecutorService 的实现</h4><p>由于 ExecutorService 只是一个接口，你如果需要使用它，那麽就需要提供一个该接口的实现。ExecutorService 接口在 java.util.concurrent 包中有如下实现类：</p>
+<div style="margin-top: 2rem"></div>
+
+<center><br><img src="https://i.imgur.com/WLJdMpM.png" alt=""><br></center>
+
+<p>这里我简单使用其中2个实现类:</p>
+<ul>
+<li>ThreadPoolExecutor</li>
+<li>ScheduledThreadPoolExecutor</li>
+</ul>
+<h3 id="创建一个-ExecutorService"><a href="#创建一个-ExecutorService" class="headerlink" title="创建一个 ExecutorService"></a>创建一个 ExecutorService</h3><p>你可以根据自己的需要来创建一个 ExecutorService ，也可以使用 Executors 工厂方法来创建一个 ExecutorService 实例。这里有几个创建 ExecutorService 的例子: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">private</span> ExecutorService executorService1;</div><div class="line">    <span class="keyword">private</span> ExecutorService executorService2;</div><div class="line">    <span class="keyword">private</span> ScheduledExecutorService executorService3;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger log = Logger.getLogger(ExecutorDemo.class);</div><div class="line"></div><div class="line">    <span class="meta">@BeforeEach</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">studyExecutor</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="comment">//        创建线程池的三种方式</span></div><div class="line"><span class="comment">//        1.创建SingleThread,创建一个线程的线程池</span></div><div class="line">        executorService1 = Executors.newSingleThreadExecutor();</div><div class="line"></div><div class="line"><span class="comment">//        2.创建固定线程数量的线程池</span></div><div class="line">        executorService2 = Executors.newFixedThreadPool(<span class="number">10</span>);</div><div class="line"></div><div class="line"><span class="comment">//        3.创建周期性线程池</span></div><div class="line">        executorService3 = Executors.newScheduledThreadPool(<span class="number">10</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="ExecutorService-使用方法"><a href="#ExecutorService-使用方法" class="headerlink" title="ExecutorService 使用方法"></a>ExecutorService 使用方法</h3><p>这里有几种不同的方式让你将任务委托给一个 ExecutorService：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">execute(<span class="keyword">new</span> Runnable() &#123;&#125;)</div><div class="line">submit(<span class="keyword">new</span> Runnable() &#123;&#125;)</div><div class="line">submit(<span class="keyword">new</span> Callable&lt;Object&gt;() &#123;&#125;)</div><div class="line">invokeAny(...)</div><div class="line">invokeAll(...)</div></pre></td></tr></table></figure>
+<p>接下来把每個方法都试试看</p>
+<h4 id="execute-Runnable"><a href="#execute-Runnable" class="headerlink" title="execute(Runnable)"></a>execute(Runnable)</h4><p>方法 execute(Runnable) 接收一个 java.lang.Runnable 对象作为参数，并且以异步的方式执行它。如下是一个使用 ExecutorService 执行 Runnable 的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeRunnable</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="comment">//       创建固定线程数量的线程池</span></div><div class="line">        executorService2 = Executors.newFixedThreadPool(<span class="number">10</span>);</div><div class="line"><span class="comment">//        异步执行线程任务</span></div><div class="line">        executorService2.execute(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                System.out.println(<span class="string">"Asynchronous task"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"><span class="comment">//        等待所有的线程执行线程任务完毕后,关闭线程</span></div><div class="line">        executorService2.shutdown();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>使用这种方式没有办法获取执行 Runnable 之后的结果，如果你希望获取运行之后的返回值，就必须使用接收 Callable 参数的 execute() 方法，后者将会在下文中提到。</p>
+<h4 id="submit-Runnable"><a href="#submit-Runnable" class="headerlink" title="submit(Runnable)"></a>submit(Runnable)</h4><p>方法 submit(Runnable) 同样接收一个 Runnable 的实现作为参数，但是会返回一个 Future 对象。这個 Future 对象可以用于判断 Runnable 是否结束执行。如下是一个 ExecutorService 的 submit() 方法的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">submitRunnable</span><span class="params">()</span> </span>&#123;</div><div class="line">        Future&lt;?&gt; future = executorService2.submit(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                System.out.println(<span class="string">"Asynchronous task"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line"><span class="comment">//            如果任务执行结束则返回null</span></div><div class="line">            System.out.println(<span class="string">"future.get()&gt;&gt;&gt;&gt;&gt;&gt;"</span> + future.get());</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        executorService2.shutdown();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="submit-Callable"><a href="#submit-Callable" class="headerlink" title="submit(Callable)"></a>submit(Callable)</h4><p>方法 submit(Callable) 和方法 submit(Runnable) 比较类似，但是区别则在于它们接收不同的参数类型。Callable 的实例与 Runnable 的实例很类似，但是 Callable 的 call() 方法可以返回一个结果。方法 Runnable.run() 则不能返回结果。</p>
+<p>Callable 的返回值可以从方法 submit(Callable) 返回的 Future 对象中获取。如下是一个 ExecutorService Callable 的样例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">submitCallableRunnable</span><span class="params">()</span> </span>&#123;</div><div class="line">        Future&lt;Object&gt; future = executorService2.submit(<span class="keyword">new</span> Callable&lt;Object&gt;() &#123;</div><div class="line"><span class="comment">//            使用Callable接口可以返回一个结果</span></div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">                <span class="keyword">return</span> <span class="string">"Callable Result"</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line"><span class="comment">//            获取Callable接口中call()方法的返回结果</span></div><div class="line">            System.out.println(<span class="string">"future.get()&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;  "</span> + future.get());</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        executorService2.shutdown();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>上述样例代码会输出如下结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">future.get()&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;  Callable Result</div><div class="line">Process finished with exit code <span class="number">0</span></div></pre></td></tr></table></figure>
+<h4 id="inVokeAny"><a href="#inVokeAny" class="headerlink" title="inVokeAny()"></a>inVokeAny()</h4><p>方法 invokeAny() 接收一个包含 Callable 对象的集合作为参数。调用该方法不会返回 Future 对象，而是返回集合中某一个 Callable 对象的结果，而且无法保证调用之后返回的结果是哪一个 Callable，只知道它是这些 Callable 中一个执行结束的 Callable 对象。<br>如果一个任务运行完毕或者抛出异常，方法会取消其它的 Callable 的执行。<br>以下是一个样例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inVokeAnyRunnable</span><span class="params">()</span> </span>&#123;</div><div class="line">  </div><div class="line">    List&lt;Callable&lt;String&gt;&gt; callableList = <span class="keyword">new</span> ArrayList&lt;Callable&lt;String&gt;&gt;();</div><div class="line">    callableList.add(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Task1"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    callableList.add(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Task2"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    callableList.add(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Task3"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        String result = executorService2.invokeAny(callableList);</div><div class="line">        log.info(<span class="string">"result&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;  "</span> + result);</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    executorService2.shutdown();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上样例代码会打印出在给定的集合中的某一个 Callable 的返回结果。我尝试运行了几次，结果都在改变。有时候返回结果是”Task 1”，有时候是”Task 2”，等等。</p>
+<h4 id="invokeAll"><a href="#invokeAll" class="headerlink" title="invokeAll()"></a>invokeAll()</h4><p>方法 invokeAll() 会调用存在于参数集合中的所有 Callable 对象，并且返回一个包含 Future 对象的集合，你可以通过这个返回的集合来管理每个 Callable 的执行结果。<br>需要注意的是，任务有可能因为异常而导致运行结束，所以它可能并不是真的成功运行了。但是我们没有办法通过 Future 对象来了解到这个差异。<br>以下是一个代码样例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inVokeAllRunnable</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">    List&lt;Callable&lt;String&gt;&gt; callableList = <span class="keyword">new</span> ArrayList&lt;Callable&lt;String&gt;&gt;();</div><div class="line">    callableList.add(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Task1"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    callableList.add(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Task2"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    callableList.add(<span class="keyword">new</span> Callable&lt;String&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="string">"Task3"</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        List&lt;Future&lt;String&gt;&gt; futureList = executorService2.invokeAll(callableList);</div><div class="line">        <span class="keyword">for</span> (Future&lt;String&gt; future : futureList) &#123;</div><div class="line">            log.info(<span class="string">"future.get()&gt;&gt;&gt;&gt;&gt;&gt;&gt;  "</span> + future.get());</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    executorService2.shutdown();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ExecuteService-服务的关闭"><a href="#ExecuteService-服务的关闭" class="headerlink" title="ExecuteService 服务的关闭"></a>ExecuteService 服务的关闭</h3><p>当使用 ExecutorService 完毕之后，我们应该关闭它，这样才能保证线程不会继续保持运行状态。<br>举例来说，如果你的程序通过 main() 方法启动，并且主线程退出了你的程序，如果你还有一个活动的 ExecutorService 存在于你的程序中，那么程序将会继续保持运行状态。存在于 ExecutorService 中的活动线程会阻止Java虚拟机关闭。<br>为了关闭在 ExecutorService 中的线程，你需要调用 shutdown() 方法。ExecutorService 并不会马上关闭，而是不再接收新的任务，一旦所有的线程结束执行当前任务，ExecutorServie 才会真的关闭。所有在调用 shutdown() 方法之前提交到 ExecutorService 的任务都会执行。<br>如果你希望立即关闭 ExecutorService，你可以调用 shutdownNow() 方法。这个方法会尝试马上关闭所有正在执行的任务，并且跳过所有已经提交但是还没有运行的任务。但是对于正在执行的任务，是否能够成功关闭它是无法保证的，有可能他们真的被关闭掉了，也有可能它会一直执行到任务结束。这是一个最好的尝试。</p>
+<p><div class="-mob-share-ui-button -mob-share-open" style="margin-top:1rem;">分享</div></p>
+<p><div class="-mob-share-ui" style="display: none"><br>    <ul class="-mob-share-list"><br>        <li class="-mob-share-weibo"><p>新浪微博</p></li><br>        <li class="-mob-share-qzone"><p>QQ空间</p></li><br>        <li class="-mob-share-qq"><p>QQ好友</p></li><br>        <li class="-mob-share-douban"><p>豆瓣</p></li><br>        <li class="-mob-share-facebook"><p>Facebook</p></li><br>        <li class="-mob-share-twitter"><p>Twitter</p></li><br>    </ul><br>    <div class="-mob-share-close">取消</div><br></div></p>
+<p><div class="-mob-share-ui-bg"></div></p>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=224524e998b74"></script>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread/">Thread</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/22/ThreadCreate/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Java创建线程的三种方式简介</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Inhalt</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ExecutorService-的实现"><span class="nav-number">1.</span> <span class="nav-text">ExecutorService 的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个-ExecutorService"><span class="nav-number"></span> <span class="nav-text">创建一个 ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ExecutorService-使用方法"><span class="nav-number"></span> <span class="nav-text">ExecutorService 使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#execute-Runnable"><span class="nav-number">1.</span> <span class="nav-text">execute(Runnable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#submit-Runnable"><span class="nav-number">2.</span> <span class="nav-text">submit(Runnable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#submit-Callable"><span class="nav-number">3.</span> <span class="nav-text">submit(Callable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#inVokeAny"><span class="nav-number">4.</span> <span class="nav-text">inVokeAny()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#invokeAll"><span class="nav-number">5.</span> <span class="nav-text">invokeAll()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ExecuteService-服务的关闭"><span class="nav-number"></span> <span class="nav-text">ExecuteService 服务的关闭</span></a>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2016 - 2017 ZhouXu&#39;Blog All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+  </div>
+
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            ZhouXu&#39;Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2017 zhouxu All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

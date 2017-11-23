@@ -11,21 +11,21 @@
   
   
   
-  <meta name="description" content="### 前言 ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现### ExecutorService样例 ###这里有一个简单的使用Ja">
+  <meta name="description" content="###前言###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现###ExecutorService样例###这里有一个简单的使用Java 实">
 <meta name="keywords" content="线程池创建">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ExecutorService的理解与简单使用">
 <meta property="og:url" content="https://zhouxu2016.github.io/2017/11/23/ExecutorService/index.html">
 <meta property="og:site_name" content="ZhouXu&#39;Blog">
-<meta property="og:description" content="### 前言 ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现### ExecutorService样例 ###这里有一个简单的使用Ja">
+<meta property="og:description" content="###前言###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现###ExecutorService样例###这里有一个简单的使用Java 实">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/vQRNp6P.jpg">
 <meta property="og:image" content="http://static.oschina.net/uploads/space/2013/1119/165710_YOvh_136226.png">
 <meta property="og:image" content="https://i.imgur.com/WLJdMpM.png">
-<meta property="og:updated_time" content="2017-11-23T12:50:30.610Z">
+<meta property="og:updated_time" content="2017-11-23T12:55:41.665Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ExecutorService的理解与简单使用">
-<meta name="twitter:description" content="### 前言 ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现### ExecutorService样例 ###这里有一个简单的使用Ja">
+<meta name="twitter:description" content="###前言###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现###ExecutorService样例###这里有一个简单的使用Java 实">
 <meta name="twitter:image" content="https://i.imgur.com/vQRNp6P.jpg">
   
     <link rel="alternate" href="/atom.xml" title="ZhouXu&#39;Blog" type="application/atom+xml">
@@ -103,11 +103,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -123,7 +123,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -135,11 +135,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -197,7 +197,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/vQRNp6P.jpg" alt=""></center><br><br><br><br>### 前言 ###<br><br>接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现<br><br><br><br><br>### ExecutorService样例 ###<br><br>这里有一个简单的使用Java 实现的 ExectorService 样例:<br><br>首先使用 newFixedThreadPool() 工厂方法创建一个 ExecutorService ，创建了一个可以容纳10个线程任务的线程池。其次，向 execute() 方法中传递一个异步的 Runnable 接口的实现，这样做会让 ExecutorService 中的某个线程执行这个Runnable 线程<br><br><a id="more"></a><br><br><br><br><br>### 任务的委托(Task Delegation) ###<br><br>下方展示了一个线程的把任务委托异步执行的ExecutorService的示意图。<br><br><div style="margin-top: 2rem"></div>
+        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/vQRNp6P.jpg" alt=""></center><br><br><br><br>###前言###<br><br><br>接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现<br><br><br>###ExecutorService样例###<br><br><br>这里有一个简单的使用Java 实现的 ExectorService 样例:<br><br>首先使用 newFixedThreadPool() 工厂方法创建一个 ExecutorService ，创建了一个可以容纳10个线程任务的线程池。其次，向 execute() 方法中传递一个异步的 Runnable 接口的实现，这样做会让 ExecutorService 中的某个线程执行这个Runnable 线程<br><br><a id="more"></a><br><br><br><br>###任务的委托(Task Delegation)###<br><br><br>下方展示了一个线程的把任务委托异步执行的ExecutorService的示意图。<br><br><div style="margin-top: 2rem"></div>
 
 <center><br><br><img src="http://static.oschina.net/uploads/space/2013/1119/165710_YOvh_136226.png" alt=""><br><br></center>
 
@@ -279,7 +279,7 @@
   
   
     <a href="/2017/11/22/ThreadCreate/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">Java创建线程的三种方式简介</div>
     </a>
   
@@ -292,7 +292,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">Inhalt</strong>
     
         <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ExecutorService的实现"><span class="nav-number">1.</span> <span class="nav-text">ExecutorService的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个ExecutorService"><span class="nav-number">2.</span> <span class="nav-text">创建一个ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ExecutorService使用方法"><span class="nav-number">3.</span> <span class="nav-text">ExecutorService使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#execute-Runnable"><span class="nav-number">3.1.</span> <span class="nav-text">execute(Runnable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#submit-Runnable"><span class="nav-number">3.2.</span> <span class="nav-text">submit(Runnable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#submit-Callable"><span class="nav-number">3.3.</span> <span class="nav-text">submit(Callable)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#inVokeAny"><span class="nav-number">3.4.</span> <span class="nav-text">inVokeAny()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#invokeAll"><span class="nav-number">3.5.</span> <span class="nav-text">invokeAll()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ExecuteService服务的关闭"><span class="nav-number">4.</span> <span class="nav-text">ExecuteService服务的关闭</span></a></li></ol>
     

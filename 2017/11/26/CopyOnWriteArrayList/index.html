@@ -11,23 +11,23 @@
   
   
   
-  <meta name="description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
+  <meta name="description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
 <meta name="keywords" content="CopyOnWriteArrayList的简单使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CopyOnWriteArrayList的简单使用">
 <meta property="og:url" content="https://zhouxu2016.github.io/2017/11/26/CopyOnWriteArrayList/index.html">
 <meta property="og:site_name" content="ZhouXu&#39;Blog">
-<meta property="og:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
+<meta property="og:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/2aLOVM8.jpg">
 <meta property="og:image" content="https://i.imgur.com/mjX4TpP.png">
 <meta property="og:image" content="https://i.imgur.com/Qz8Idjw.png">
 <meta property="og:image" content="http://img.blog.csdn.net/20170117145928110?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170117150336836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-11-26T04:40:34.916Z">
+<meta property="og:updated_time" content="2017-11-26T04:52:10.387Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CopyOnWriteArrayList的简单使用">
-<meta name="twitter:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
+<meta name="twitter:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
 <meta name="twitter:image" content="https://i.imgur.com/2aLOVM8.jpg">
   
     <link rel="alternate" href="/atom.xml" title="ZhouXu&#39;Blog" type="application/atom+xml">
@@ -204,8 +204,7 @@
 
 
 
-<h3 id="CopyOnWriteArrayList的介绍"><a href="#CopyOnWriteArrayList的介绍" class="headerlink" title="CopyOnWriteArrayList的介绍"></a>CopyOnWriteArrayList的介绍</h3><p>CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。</p>
-<p>一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationException错误。</p>
+<h3 id="CopyOnWriteArrayList的介绍"><a href="#CopyOnWriteArrayList的介绍" class="headerlink" title="CopyOnWriteArrayList的介绍"></a>CopyOnWriteArrayList的介绍</h3><p>CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationException错误。</p>
 <p>下面来看一个列子：两个线程一个线程foreach,一个线程修改list的值。</p>
 <h3 id="读线程"><a href="#读线程" class="headerlink" title="读线程"></a>读线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 读线程</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">  </div><div class="line">    List&lt;String&gt; list;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReadTask</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (String str : list) &#123;</div><div class="line"></div><div class="line">            log.info(<span class="string">"ReadTask&gt;&gt;&gt;&gt;&gt;"</span> + str);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <a id="more"></a>

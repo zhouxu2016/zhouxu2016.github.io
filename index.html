@@ -293,7 +293,7 @@
 
 
 <h3 id="CopyOnWriteArrayList的介绍"><a href="#CopyOnWriteArrayList的介绍" class="headerlink" title="CopyOnWriteArrayList的介绍"></a>CopyOnWriteArrayList的介绍</h3><p>CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationException错误。</p>
-<p>下面来看一个列子：两个线程一个线程foreach,一个线程修改list的值。</p>
+<p>下面来看一个列子：两个线程,一个线程foreach,一个线程修改list的值。</p>
 <h3 id="读线程"><a href="#读线程" class="headerlink" title="读线程"></a>读线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 读线程</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">  </div><div class="line">    List&lt;String&gt; list;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReadTask</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (String str : list) &#123;</div><div class="line"></div><div class="line">            log.info(<span class="string">"ReadTask&gt;&gt;&gt;&gt;&gt;"</span> + str);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
         <!-- 
 
@@ -347,18 +347,18 @@ CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安�
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/vQRNp6P.jpg" alt=""></center><br><br><br><br>### ExecutorService的简介<br><br>接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现<br><br>### ExecutorService的实现<br><br>由于 ExecutorService 只是一个接口，你如果需要使用它，那麽就需要提供一个该接口的实现。ExecutorService 接口在 java.util.concurrent 包中有如下实现类：<br><br><div style="margin-top: 2rem"></div>
+        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/vQRNp6P.jpg" alt=""></center><br><br><br><br>### ExecutorService的简介 ###<br><br>接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现<br><br>### ExecutorService的实现 ###<br><br>由于 ExecutorService 只是一个接口，你如果需要使用它，那麽就需要提供一个该接口的实现。ExecutorService 接口在 java.util.concurrent 包中有如下实现类：<br><br><div style="margin-top: 2rem"></div>
 
 <center><br><img src="https://i.imgur.com/WLJdMpM.png" alt=""><br></center>
 
 
-<h3 id="这里我简单使用其中2个实现类"><a href="#这里我简单使用其中2个实现类" class="headerlink" title="这里我简单使用其中2个实现类:"></a>这里我简单使用其中2个实现类:</h3><ol>
+<h3 id="这里我简单使用其中2个实现类"><a href="#这里我简单使用其中2个实现类" class="headerlink" title="这里我简单使用其中2个实现类"></a>这里我简单使用其中2个实现类</h3><ol>
 <li><p>ThreadPoolExecutor</p>
 </li>
 <li><p>ScheduledThreadPoolExecutor</p>
 </li>
 </ol>
-        <!-- ### ExecutorService的简介接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现### ExecutorService的实现......  -->
+        <!-- ### ExecutorService的简介 ###接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现### ExecutorServic......  -->
         <p class="article-more-link">
           <a href="/2017/11/23/ExecutorService/#more">weiter lesen</a>
         </p>

@@ -237,11 +237,11 @@
   <div class="intro-navigate">
       <p class="navigater-list">
         
-          <a id="beautifont" class="main-nav-link" href="/">Home</a>
+          <a id="beautifont" class="main-nav-link" href="/">Startseite</a>
         
-          <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
+          <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Categories</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -259,6 +259,68 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-CopyOnWriteArrayList"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/26/CopyOnWriteArrayList/">CopyOnWriteArrayList的简单使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/26/CopyOnWriteArrayList/" class="article-date">
+	  <time datetime="2017-11-26T03:46:04.145Z" itemprop="datePublished">2017-11-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/2aLOVM8.jpg" alt=""></center>
+
+
+
+<h3 id="CopyOnWriteArrayList的介绍"><a href="#CopyOnWriteArrayList的介绍" class="headerlink" title="CopyOnWriteArrayList的介绍"></a>CopyOnWriteArrayList的介绍</h3><p>CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。</p>
+<p>一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationException错误。</p>
+<p>下面来看一个列子：两个线程一个线程foreach,一个线程修改list的值。</p>
+<h3 id="读线程"><a href="#读线程" class="headerlink" title="读线程"></a>读线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 读线程</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">  </div><div class="line">    List&lt;String&gt; list;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReadTask</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (String str : list) &#123;</div><div class="line"></div><div class="line">            log.info(<span class="string">"ReadTask&gt;&gt;&gt;&gt;&gt;"</span> + str);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <!-- 
+
+
+
+
+CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。
+一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExcep......  -->
+        <p class="article-more-link">
+          <a href="/2017/11/26/CopyOnWriteArrayList/#more">weiter lesen</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Collection/">Collection</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-ExecutorService"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -300,7 +362,7 @@
 </ol>
         <!-- ExecutorService的简介接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现ExecutorService的实现由于 Execu......  -->
         <p class="article-more-link">
-          <a href="/2017/11/23/ExecutorService/#more">Read More</a>
+          <a href="/2017/11/23/ExecutorService/#more">weiter lesen</a>
         </p>
       
     </div>
@@ -370,7 +432,7 @@ Java中创建线程主要有三种方式: 1.继承Thread类创建线程类
 （2）创建Thread子类的实例，即创建了线程对象。
 （......  -->
         <p class="article-more-link">
-          <a href="/2017/11/22/ThreadCreate/#more">Read More</a>
+          <a href="/2017/11/22/ThreadCreate/#more">weiter lesen</a>
         </p>
       
     </div>
@@ -430,7 +492,7 @@ Java中创建线程主要有三种方式: 1.继承Thread类创建线程类
 前言FastJson的介绍:JSON协议使用方便，越来越流行,JSON的处理器有很多,这里我介绍一下FastJson,FastJson是阿里的开源框架,被不少企业使用,是一个极其优秀的Json框架,Github地址: FastJson
 FastJson的特点:1.FastJson数度快,无论序列化和反序列化,都是当之无愧的fast2.功能强大(支持普通JDK类包括任意Java Bean......  -->
         <p class="article-more-link">
-          <a href="/2017/11/03/FastJsonDemo/#more">Read More</a>
+          <a href="/2017/11/03/FastJsonDemo/#more">weiter lesen</a>
         </p>
       
     </div>
@@ -492,7 +554,7 @@ FastJson的特点:1.FastJson数度快,无论序列化和反序列化,都是当�
 
 Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub......  -->
         <p class="article-more-link">
-          <a href="/2017/11/03/hello-world/#more">Read More</a>
+          <a href="/2017/11/03/hello-world/#more">weiter lesen</a>
         </p>
       
     </div>

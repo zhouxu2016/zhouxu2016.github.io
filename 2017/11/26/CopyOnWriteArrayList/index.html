@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>copyonwritearraylist的简单使用 | ZhouXu&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="CopyOnWriteArrayList的简单使用" />
+  
+  
+  
+  
+  <meta name="description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
+<meta name="keywords" content="CopyOnWriteArrayList的简单使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CopyOnWriteArrayList的简单使用">
+<meta property="og:url" content="https://zhouxu2016.github.io/2017/11/26/CopyOnWriteArrayList/index.html">
+<meta property="og:site_name" content="ZhouXu&#39;Blog">
+<meta property="og:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/2aLOVM8.jpg">
+<meta property="og:image" content="https://i.imgur.com/mjX4TpP.png">
+<meta property="og:image" content="https://i.imgur.com/Qz8Idjw.png">
+<meta property="og:image" content="http://img.blog.csdn.net/20170117145928110?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170117150336836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-11-26T04:40:34.916Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CopyOnWriteArrayList的简单使用">
+<meta name="twitter:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
+<meta name="twitter:image" content="https://i.imgur.com/2aLOVM8.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="ZhouXu&#39;Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/logo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/logo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
+            TAGS: 'Tags',
+            UNTITLED: '(Unbenannt)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-CopyOnWriteArrayList" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      CopyOnWriteArrayList的简单使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/26/CopyOnWriteArrayList/" class="article-date">
+	  <time datetime="2017-11-26T03:46:04.145Z" itemprop="datePublished">2017-11-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/2aLOVM8.jpg" alt=""></center>
+
+
+
+<h3 id="CopyOnWriteArrayList的介绍"><a href="#CopyOnWriteArrayList的介绍" class="headerlink" title="CopyOnWriteArrayList的介绍"></a>CopyOnWriteArrayList的介绍</h3><p>CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的。</p>
+<p>一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationException错误。</p>
+<p>下面来看一个列子：两个线程一个线程foreach,一个线程修改list的值。</p>
+<h3 id="读线程"><a href="#读线程" class="headerlink" title="读线程"></a>读线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 读线程</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ReadTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">  </div><div class="line">    List&lt;String&gt; list;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReadTask</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (String str : list) &#123;</div><div class="line"></div><div class="line">            log.info(<span class="string">"ReadTask&gt;&gt;&gt;&gt;&gt;"</span> + str);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="写线程"><a href="#写线程" class="headerlink" title="写线程"></a>写线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 写线程</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WriteTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index;</div><div class="line">    <span class="keyword">private</span> List&lt;String&gt; list;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WriteTask</span><span class="params">(<span class="keyword">int</span> index, List&lt;String&gt; list)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.index = index;</div><div class="line">        <span class="keyword">this</span>.list = list;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        list.remove(index);</div><div class="line">        list.add(index, <span class="string">"write&gt;&gt;"</span> + index);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="运行代码"><a href="#运行代码" class="headerlink" title="运行代码"></a>运行代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> NUM = <span class="number">10</span>;</div><div class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</div><div class="line"><span class="comment">//        List&lt;String&gt; list = new CopyOnWriteArrayList&lt;String&gt;();</span></div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NUM; i++) &#123;</div><div class="line">            list.add(<span class="string">"main_"</span> + i);</div><div class="line">        &#125;</div><div class="line"></div><div class="line"><span class="comment">//        创建指定线程数量的线程池</span></div><div class="line">        ExecutorService executorService = Executors.newFixedThreadPool(NUM);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NUM; i++) &#123;</div><div class="line"></div><div class="line">            executorService.execute(<span class="keyword">new</span> ReadTask(list));</div><div class="line">            executorService.execute(<span class="keyword">new</span> WriteTask(i, list));</div><div class="line">        &#125;</div><div class="line"></div><div class="line"><span class="comment">//        等待线程任务执行结束之后,关闭线程</span></div><div class="line"><span class="comment">//        executorService.shutdown();</span></div><div class="line"><span class="comment">//        立即关闭所有线程(即便是正在执行线程任务的线程,但结果不一定能够成功关闭)</span></div><div class="line">        executorService.shutdownNow();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line"></div><div class="line"><span class="comment">//        java.util.ConcurrentModificationException,修改并发异常</span></div><div class="line">        <span class="keyword">new</span> CopyOnWriteArrayListDemo().run();</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/mjX4TpP.png" alt=""></center>
+
+<p>从结果中可以看出来。在多线程情况下报错。其原因就是多线程操作结果：那这个种方案不行我们就换个方案。用jdk自带的类CopyOnWriteArrayList来做容器。</p>
+<p>换了种方案看代码 : </p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> NUM = <span class="number">10</span>;</div><div class="line"><span class="comment">//        List&lt;String&gt; list = new ArrayList&lt;String&gt;();</span></div><div class="line">        List&lt;String&gt; list = <span class="keyword">new</span> CopyOnWriteArrayList&lt;String&gt;();</div></pre></td></tr></table></figure>
+<p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/Qz8Idjw.png" alt=""></center>
+
+<p>运行上面的代码,没有报出,java.util.ConcurrentModificationException异常,说明了CopyOnWriteArrayList并发多线程的环境下,仍然能很好的工作</p>
+<h3 id="CopyOnWriteArrayList源码分析"><a href="#CopyOnWriteArrayList源码分析" class="headerlink" title="CopyOnWriteArrayList源码分析"></a>CopyOnWriteArrayList源码分析</h3><p>CopyOnWriteArrayList使用了一种叫写时复制的方法，当有新元素添加到CopyOnWriteArrayList时，先从原有的数组中拷贝一份出来，然后在新的数组做写操作，写完之后，再将原来的数组引用指向到新数组。</p>
+<p>当有新元素加入的时候，如下图，创建新数组，并往新数组中加入一个新元素,这个时候，array这个引用仍然是指向原数组的。</p>
+<p><div style="margin-top: 2rem"></div></p>
+<center><img src="http://img.blog.csdn.net/20170117145928110?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></center>
+
+
+
+<p>当元素在新数组添加成功后，将array这个引用指向新数组。</p>
+<p><div style="margin-top: 2rem"></div></p>
+<center><img src="http://img.blog.csdn.net/20170117150336836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></center>
+
+<p>CopyOnWriteArrayList的整个add操作都是在锁的保护下进行的,这样做是为了避免在多线程并发add的时候，复制出多个副本出来,把数据搞乱了，导致最终的数组数据不是我们期望的。</p>
+<p>CopyOnWriteArrayList的add()方法操作的源代码如下: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</div><div class="line">  <span class="comment">//1、先加锁</span></div><div class="line">  <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</div><div class="line">  lock.lock();</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    Object[] elements = getArray();</div><div class="line">    <span class="keyword">int</span> len = elements.length;</div><div class="line">    <span class="comment">//2、拷贝数组</span></div><div class="line">    Object[] newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</div><div class="line">    <span class="comment">//3、将元素加入到新数组中</span></div><div class="line">    newElements[len] = e;</div><div class="line">    <span class="comment">//4、将array引用指向到新数组</span></div><div class="line">    setArray(newElements);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="comment">//5、解锁</span></div><div class="line">    lock.unlock();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于所有的写操作都是在新数组进行的，这个时候如果有线程并发的写，则通过锁来控制，如果有线程并发的读，则分几种情况:</p>
+<p>(1) 如果写操作未完成，那么直接读取原数组的数据；<br>(2) 如果写操作完成，但是引用还未指向新数组，那么也是读取原数组数据；<br>(3) 如果写操作完成，并且引用已经指向了新的数组，那么直接从新数组中读取数据。</p>
+<p>可见，CopyOnWriteArrayList的读操作是可以不用加锁的。</p>
+<h3 id="CopyOnWriteArrayList的使用场景"><a href="#CopyOnWriteArrayList的使用场景" class="headerlink" title="CopyOnWriteArrayList的使用场景"></a>CopyOnWriteArrayList的使用场景</h3><p>通过上面的分析，CopyOnWriteArrayList 有几个缺点： </p>
+<p>(1) 由于写操作的时候，需要拷贝数组，会消耗内存，如果原数组的内容比较多的情况下，可能导致young gc或者full gc<br>(2) 不能用于实时读的场景，像拷贝数组、新增元素都需要时间，所以调用一个set操作后，读取到数据可能还是旧的,虽然CopyOnWriteArrayList 能做到最终一致性,但是还是没法满足实时性要求；</p>
+<p>CopyOnWriteArrayList 合适读多写少的场景，不过这类慎用,因为谁也没法保证CopyOnWriteArrayList 到底要放置多少数据，万一数据稍微有点多，每次add/set都要重新复制数组，这个代价实在太高昂了。在高性能的互联网应用中，这种操作分分钟引起故障。</p>
+<h3 id="CopyOnWriteArrayList总结"><a href="#CopyOnWriteArrayList总结" class="headerlink" title="CopyOnWriteArrayList总结"></a>CopyOnWriteArrayList总结</h3><p>如上面的分析CopyOnWriteArrayList表达的一些思想:</p>
+<p>(1) 读写分离，读和写分开<br>(2) 最终一致性<br>(3) 使用另外开辟空间的思路，来解决并发冲突</p>
+<p><div class="-mob-share-ui-button -mob-share-open" style="margin-top:1rem;">分享</div></p>
+<p><div class="-mob-share-ui" style="display: none"><br>    <ul class="-mob-share-list"><br>        <li class="-mob-share-weibo"><p>新浪微博</p></li><br>        <li class="-mob-share-qzone"><p>QQ空间</p></li><br>        <li class="-mob-share-qq"><p>QQ好友</p></li><br>        <li class="-mob-share-douban"><p>豆瓣</p></li><br>        <li class="-mob-share-facebook"><p>Facebook</p></li><br>        <li class="-mob-share-twitter"><p>Twitter</p></li><br>    </ul><br>    <div class="-mob-share-close">取消</div><br></div></p>
+<p><div class="-mob-share-ui-bg"></div></p>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=224524e998b74"></script>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Collection/">Collection</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/23/ExecutorService/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">ExecutorService的理解与简单使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Inhalt</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList的介绍"><span class="nav-number">1.</span> <span class="nav-text">CopyOnWriteArrayList的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读线程"><span class="nav-number">2.</span> <span class="nav-text">读线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写线程"><span class="nav-number">3.</span> <span class="nav-text">写线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行代码"><span class="nav-number">4.</span> <span class="nav-text">运行代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果"><span class="nav-number">5.</span> <span class="nav-text">运行结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList源码分析"><span class="nav-number">6.</span> <span class="nav-text">CopyOnWriteArrayList源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList的使用场景"><span class="nav-number">7.</span> <span class="nav-text">CopyOnWriteArrayList的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList总结"><span class="nav-number">8.</span> <span class="nav-text">CopyOnWriteArrayList总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2016 - 2017 ZhouXu&#39;Blog All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+  </div>
+
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            ZhouXu&#39;Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2017 zhouxu All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

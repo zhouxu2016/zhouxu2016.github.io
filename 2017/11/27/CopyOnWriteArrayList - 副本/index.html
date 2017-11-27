@@ -15,14 +15,14 @@
 <meta name="keywords" content="ConcurrentHashMap的简单使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ConcurrentHashMap的简单使用">
-<meta property="og:url" content="https://zhouxu2016.github.io/2017/11/27/ConcurrentHashMap/index.html">
+<meta property="og:url" content="https://zhouxu2016.github.io/2017/11/27/CopyOnWriteArrayList - 副本/index.html">
 <meta property="og:site_name" content="ZhouXu&#39;Blog">
 <meta property="og:description" content="ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能 1234567891011121314public interface Con">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://i.imgur.com/jITMzmE.jpg">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5621908-1e81a73a1afaebb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5621908-77efbdbf6c79fac9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-11-27T14:38:55.928Z">
+<meta property="og:updated_time" content="2017-11-27T14:33:12.398Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ConcurrentHashMap的简单使用">
 <meta name="twitter:description" content="ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能 1234567891011121314public interface Con">
@@ -164,7 +164,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-ConcurrentHashMap" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-CopyOnWriteArrayList - 副本" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -180,8 +180,8 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/27/ConcurrentHashMap/" class="article-date">
-	  <time datetime="2017-11-27T14:37:26.960Z" itemprop="datePublished">2017-11-27</time>
+	<a href="/2017/11/27/CopyOnWriteArrayList - 副本/" class="article-date">
+	  <time datetime="2017-11-27T13:34:55.975Z" itemprop="datePublished">2017-11-27</time>
 	</a>
 
       
@@ -214,8 +214,6 @@
 <p>从线程安全的角度来说,HashTable已经是一个线程安全的HashMap,说起ConcurrentHashMap,就不得不先提及下HashMap在线程不安全的表现</p>
 <h3 id="HashMap遍历删除"><a href="#HashMap遍历删除" class="headerlink" title="HashMap遍历删除"></a>HashMap遍历删除</h3><p>HashMap或者ArrayList边遍历边删除数据会报java.util.ConcurrentModificationException异常</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    Map&lt;Long, String&gt; mReqPacket = <span class="keyword">new</span> HashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        mReqPacket.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        String value = entry.getValue();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            mReqPacket.remove(key);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果: </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">java.util.ConcurrentModificationException</div><div class="line">	at java.util.HashMap$HashIterator.nextNode(HashMap.java:<span class="number">1437</span>)</div><div class="line">	at java.util.HashMap$EntryIterator.next(HashMap.java:<span class="number">1471</span>)</div><div class="line">	at java.util.HashMap$EntryIterator.next(HashMap.java:<span class="number">1469</span>)</div><div class="line">	at map.ConcurrentMapDemo.test1(ConcurrentMapDemo.java:<span class="number">119</span>)</div><div class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div><div class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">62</span>)</div><div class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</div><div class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">498</span>)</div><div class="line">	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:<span class="number">389</span>)</div><div class="line">Process finished with exit code -<span class="number">1</span></div></pre></td></tr></table></figure>
 <p>使用迭代器删除元素,没有问题,不会出现异常 : </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">  Map&lt;Long, String&gt; mReqPacket = <span class="keyword">new</span> HashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        mReqPacket.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Iterator&lt;Entry&lt;Long, String&gt;&gt; iterator = mReqPacket.entrySet().iterator(); iterator.hasNext();) &#123;</div><div class="line">        Entry&lt;Long, String&gt; entry = iterator.next();</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            iterator.remove();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ConcurrentHashMap允许一边更新、一边遍历，也就是说在Iterator对象遍历的时候，ConcurrentHashMap也可以进行remove,put操作，且遍历的数据会随着remove,put操作产出变化</p>
@@ -283,10 +281,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2017/11/27/ConcurrentHashMap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          ConcurrentHashMap的简单使用
+        
+      </div>
+    </a>
   
-    <a href="/2017/11/27/CopyOnWriteArrayList - 副本/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2017/11/26/CopyOnWriteArrayList/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">ConcurrentHashMap的简单使用</div>
+      <div class="article-nav-title">CopyOnWriteArrayList的简单使用</div>
     </a>
   
 </nav>

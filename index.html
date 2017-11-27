@@ -277,7 +277,7 @@
     <div class="article-meta">
       
 	<a href="/2017/11/27/ConcurrentHashMap/" class="article-date">
-	  <time datetime="2017-11-27T13:34:55.975Z" itemprop="datePublished">2017-11-27</time>
+	  <time datetime="2017-11-27T14:37:26.960Z" itemprop="datePublished">2017-11-27</time>
 	</a>
 
       
@@ -307,6 +307,70 @@ ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一�
 1234567891011121314public interface ......  -->
         <p class="article-more-link">
           <a href="/2017/11/27/ConcurrentHashMap/#more">weiter lesen</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Collection/">Collection</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-CopyOnWriteArrayList - 副本"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/27/CopyOnWriteArrayList - 副本/">ConcurrentHashMap的简单使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/27/CopyOnWriteArrayList - 副本/" class="article-date">
+	  <time datetime="2017-11-27T13:34:55.975Z" itemprop="datePublished">2017-11-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/jITMzmE.jpg" alt=""></center>
+
+
+
+<h3 id="ConcurrentHashMap的介绍"><a href="#ConcurrentHashMap的介绍" class="headerlink" title="ConcurrentHashMap的介绍"></a>ConcurrentHashMap的介绍</h3><p>ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ConcurrentMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Map</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//插入元素</span></div><div class="line">    <span class="function">V <span class="title">putIfAbsent</span><span class="params">(K key, V value)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//移除元素</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object key, Object value)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//替换元素</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">replace</span><span class="params">(K key, V oldValue, V newValue)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//替换元素</span></div><div class="line">    <span class="function">V <span class="title">replace</span><span class="params">(K key, V value)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>(1) putIfAbsent: 与原有put方法不同的是,putIfAbsent方法中如果插入的key相同,则不替换原有的value值</p>
+<p>(2) remove: 与原有remove方法不同的是,新remove方法中增加了对value的判断,如果要删除的key–value不能与Map中原有的key–value对应上,则不会删除该元素</p>
+<p>(3) replace(K,V,V): 增加了对value值的判断,如果key–oldValue能与Map中原有的key–value对应上,才进行替换操作</p>
+<p>(4) replace(K,V): 与上面的replace不同的是,此replace不会对Map中原有的key–value进行比较,如果key存在则直接替换</p>
+        <!-- 
+
+
+
+
+ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能
+1234567891011121314public interface ......  -->
+        <p class="article-more-link">
+          <a href="/2017/11/27/CopyOnWriteArrayList - 副本/#more">weiter lesen</a>
         </p>
       
     </div>

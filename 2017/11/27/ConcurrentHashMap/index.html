@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>concurrenthashmap的简单使用 | ZhouXu&#39;Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="ConcurrentHashMap的简单使用" />
+  
+  
+  
+  
+  <meta name="description" content="ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能 1234567891011121314public interface Con">
+<meta name="keywords" content="ConcurrentHashMap的简单使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ConcurrentHashMap的简单使用">
+<meta property="og:url" content="https://zhouxu2016.github.io/2017/11/27/ConcurrentHashMap/index.html">
+<meta property="og:site_name" content="ZhouXu&#39;Blog">
+<meta property="og:description" content="ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能 1234567891011121314public interface Con">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/jITMzmE.jpg">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5621908-1e81a73a1afaebb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5621908-77efbdbf6c79fac9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-11-27T14:24:36.695Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ConcurrentHashMap的简单使用">
+<meta name="twitter:description" content="ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能 1234567891011121314public interface Con">
+<meta name="twitter:image" content="https://i.imgur.com/jITMzmE.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="ZhouXu&#39;Blog" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/logo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/logo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/logo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categorías</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ConcurrentHashMap" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ConcurrentHashMap的简单使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/27/ConcurrentHashMap/" class="article-date">
+	  <time datetime="2017-11-27T13:34:55.975Z" itemprop="datePublished">2017-11-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/jITMzmE.jpg" alt=""></center>
+
+
+
+<h3 id="ConcurrentHashMap的介绍"><a href="#ConcurrentHashMap的介绍" class="headerlink" title="ConcurrentHashMap的介绍"></a>ConcurrentHashMap的介绍</h3><p>ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ConcurrentMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Map</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//插入元素</span></div><div class="line">    <span class="function">V <span class="title">putIfAbsent</span><span class="params">(K key, V value)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//移除元素</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object key, Object value)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//替换元素</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">replace</span><span class="params">(K key, V oldValue, V newValue)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//替换元素</span></div><div class="line">    <span class="function">V <span class="title">replace</span><span class="params">(K key, V value)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>(1). putIfAbsent: 与原有put方法不同的是,putIfAbsent方法中如果插入的key相同,则不替换原有的value值</p>
+<p>(2). remove: 与原有remove方法不同的是,新remove方法中增加了对value的判断,如果要删除的key–value不能与Map中原有的key–value对应上,则不会删除该元素</p>
+<p>(3). replace(K,V,V): 增加了对value值的判断,如果key–oldValue能与Map中原有的key–value对应上,才进行替换操作</p>
+<p>(4). replace(K,V): 与上面的replace不同的是,此replace不会对Map中原有的key–value进行比较,如果key存在则直接替换</p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger log = Logger.getLogger(ConcurrentMapDemo.class);</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        ConcurrentHashMap&lt;Object, Object&gt; concurrentHashMap = <span class="keyword">new</span> ConcurrentHashMap&lt;Object, Object&gt;();</div><div class="line"></div><div class="line">        concurrentHashMap.put(<span class="string">"name"</span>, <span class="string">"tom"</span>);</div><div class="line"></div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        putIfAbsent: 与原有put方法不同的是,putIfAbsent方法中如果插入的key相同,则不替换原有的value值</span></div><div class="line">        concurrentHashMap.putIfAbsent(<span class="string">"name"</span>, <span class="string">"lucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        remove: 与原有remove方法不同的是,新remove方法中增加了对value的判断,如果要删除的key--value不能与Map中原有的key--value对应上,</span></div><div class="line"><span class="comment">//        则不会删除该元素</span></div><div class="line">        concurrentHashMap.remove(<span class="string">"name"</span>, <span class="string">"lucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        replace(K,V,V): 增加了对value值的判断,如果key--oldValue能与Map中原有的key--value对应上,才进行替换操作</span></div><div class="line">        concurrentHashMap.replace(<span class="string">"name"</span>, <span class="string">"lucy"</span>, <span class="string">"newLucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        replace(K,V): 与上面的replace不同的是,此replace不会对Map中原有的key--value进行比较,如果key存在则直接替换</span></div><div class="line">        concurrentHashMap.replace(<span class="string">"name"</span>, <span class="string">"lucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>其实,对于ConcurrentMap来说,我们更关注Map本身的操作,在并发情况下是如何实现数据安全的。在java.util.concurrent包中,ConcurrentMap的实现类主要以ConcurrentHashMap为主,接下来,我们具体来看下</p>
+<p>从线程安全的角度来说,HashTable已经是一个线程安全的HashMap,说起ConcurrentHashMap,就不得不先提及下HashMap在线程不安全的表现</p>
+<h3 id="HashMap遍历删除"><a href="#HashMap遍历删除" class="headerlink" title="HashMap遍历删除"></a>HashMap遍历删除</h3><p>HashMap或者ArrayList边遍历边删除数据会报java.util.ConcurrentModificationException异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    Map&lt;Long, String&gt; mReqPacket = <span class="keyword">new</span> HashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        mReqPacket.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        String value = entry.getValue();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            mReqPacket.remove(key);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用迭代器删除元素：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">  Map&lt;Long, String&gt; mReqPacket = <span class="keyword">new</span> HashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        mReqPacket.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Iterator&lt;Entry&lt;Long, String&gt;&gt; iterator = mReqPacket.entrySet().iterator(); iterator.hasNext();) &#123;</div><div class="line">        Entry&lt;Long, String&gt; entry = iterator.next();</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            iterator.remove();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>ConcurrentHashMap允许一边更新、一边遍历，也就是说在Iterator对象遍历的时候，ConcurrentHashMap也可以进行remove,put操作，且遍历的数据会随着remove,put操作产出变化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</div><div class="line">    Map&lt;Long, String&gt; conMap = <span class="keyword">new</span> ConcurrentHashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        conMap.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : conMap.entrySet()) &#123;</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            conMap.remove(key);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : conMap.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ConcurrentHashMap多线程操作"><a href="#ConcurrentHashMap多线程操作" class="headerlink" title="ConcurrentHashMap多线程操作"></a>ConcurrentHashMap多线程操作</h3><p>对ConcurrentHashMap边遍历边删除或者增加操作不会产生异常(可以不用迭代方式删除元素)，因为其内部已经做了维护，遍历的时候都能获得最新的值。即便是多个线程一起删除、添加元素也没问题</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> Map&lt;Long, String&gt; conMap = <span class="keyword">new</span> ConcurrentHashMap&lt;Long, String&gt;();</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</div><div class="line">        conMap.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Thread thread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">for</span> (Iterator&lt;Entry&lt;Long, String&gt;&gt; iterator = conMap.entrySet().iterator(); iterator.hasNext();) &#123;</div><div class="line">                Map.Entry&lt;Long, String&gt; entry = iterator.next();</div><div class="line">                log.info(entry.getKey() + <span class="string">" - "</span> + entry.getValue());</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    Thread.sleep(<span class="number">100</span>);</div><div class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                    e.printStackTrace();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    Thread thread2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            conMap.put(<span class="number">100l</span>, <span class="string">"100"</span>);</div><div class="line">            log.info(<span class="string">"ADD:"</span> + <span class="number">100</span>);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Thread.sleep(<span class="number">100</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;);</div><div class="line"></div><div class="line">    thread.start();</div><div class="line">    thread2.start();</div><div class="line"></div><div class="line">    Thread.sleep(<span class="number">3000</span>);</div><div class="line">    log.info(<span class="string">"--------"</span>);</div><div class="line">    <span class="keyword">for</span> (Map.Entry&lt;Long, String&gt; entry : conMap.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">123</span> [Thread-<span class="number">0</span>] INFO  [map.ConcurrentMapDemo] - <span class="number">0</span> - <span class="number">0</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">123</span> [Thread-<span class="number">1</span>] INFO  [map.ConcurrentMapDemo] - ADD:<span class="number">100</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">248</span> [Thread-<span class="number">0</span>] INFO  [map.ConcurrentMapDemo] - <span class="number">1</span> - <span class="number">1</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">357</span> [Thread-<span class="number">0</span>] INFO  [map.ConcurrentMapDemo] - <span class="number">2</span> - <span class="number">2</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">466</span> [Thread-<span class="number">0</span>] INFO  [map.ConcurrentMapDemo] - <span class="number">3</span> - <span class="number">3</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">575</span> [Thread-<span class="number">0</span>] INFO  [map.ConcurrentMapDemo] - <span class="number">4</span> - <span class="number">4</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">45</span>,<span class="number">685</span> [Thread-<span class="number">0</span>] INFO  [map.ConcurrentMapDemo] - <span class="number">100</span> - <span class="number">100</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - --------</div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - <span class="number">0</span> <span class="number">0</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - <span class="number">1</span> <span class="number">1</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - <span class="number">2</span> <span class="number">2</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - <span class="number">3</span> <span class="number">3</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - <span class="number">4</span> <span class="number">4</span></div><div class="line"><span class="number">2017</span>-<span class="number">11</span>-<span class="number">27</span> <span class="number">22</span>:<span class="number">03</span>:<span class="number">48</span>,<span class="number">135</span> [main] INFO  [map.ConcurrentMapDemo] - <span class="number">100</span> <span class="number">100</span></div><div class="line"></div><div class="line">Process finished with exit code <span class="number">0</span></div></pre></td></tr></table></figure>
+<h3 id="ConcurrentHashMap结构"><a href="#ConcurrentHashMap结构" class="headerlink" title="ConcurrentHashMap结构"></a>ConcurrentHashMap结构</h3><p>我们来了解下ConcurrentHashMap的整体结构，这样有利于我们快速理解源码。我们就在此进行回顾下</p>
+<p>HashMap的整体结构</p>
+<p><div style="margin-top: 2rem"></div></p>
+<center><img src="http://upload-images.jianshu.io/upload_images/5621908-1e81a73a1afaebb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></center>
+
+<p>HashMap底层使用数组和链表，实现哈希表结构。插入的元素通过散列的形式分布到数组的各个角标下；当有重复的散列值时，便将新增的元素插入在链表头部，使其形成链表结构，依次向后排列。</p>
+<p>下面是，ConcurrentHashMap的结构: </p>
+<p><div style="margin-top: 2rem"></div></p>
+<center><img src="http://upload-images.jianshu.io/upload_images/5621908-77efbdbf6c79fac9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></center>
+
+
+
+<p>与HashMap不同的是，ConcurrentHashMap中多了一层数组结构，由Segment和HashEntry两个数组组成。其中Segment起到了加锁同步的作用，而HashEntry则起到了存储K.V键值对的作用</p>
+<p>在ConcurrentHashMap中，每一个ConcurrentHashMap都包含了一个Segment数组，在Segment数组中每一个Segment对象则又包含了一个HashEntry数组，而在HashEntry数组中，每一个HashEntry对象保存K-V数据的同时又形成了链表结构，此时与HashMap结构相同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(java.io.ObjectOutputStream s)</span></span></div><div class="line"><span class="function">        <span class="keyword">throws</span> java.io.IOException </span>&#123;</div><div class="line">        <span class="comment">// For serialization compatibility</span></div><div class="line">        <span class="comment">// Emulate segment calculation from previous version of this class</span></div><div class="line">        <span class="keyword">int</span> sshift = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> ssize = <span class="number">1</span>;</div><div class="line">        <span class="keyword">while</span> (ssize &lt; DEFAULT_CONCURRENCY_LEVEL) &#123;</div><div class="line">            ++sshift;</div><div class="line">            ssize &lt;&lt;= <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> segmentShift = <span class="number">32</span> - sshift;</div><div class="line">        <span class="keyword">int</span> segmentMask = ssize - <span class="number">1</span>;</div><div class="line">        <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">        Segment&lt;K,V&gt;[] segments = (Segment&lt;K,V&gt;[])</div><div class="line">            <span class="keyword">new</span> Segment&lt;?,?&gt;[DEFAULT_CONCURRENCY_LEVEL];</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; segments.length; ++i)</div><div class="line">            segments[i] = <span class="keyword">new</span> Segment&lt;K,V&gt;(LOAD_FACTOR);</div><div class="line">        s.putFields().put(<span class="string">"segments"</span>, segments);</div><div class="line">        s.putFields().put(<span class="string">"segmentShift"</span>, segmentShift);</div><div class="line">        s.putFields().put(<span class="string">"segmentMask"</span>, segmentMask);</div><div class="line">        s.writeFields();</div><div class="line"></div><div class="line">        Node&lt;K,V&gt;[] t;</div><div class="line">        <span class="keyword">if</span> ((t = table) != <span class="keyword">null</span>) &#123;</div><div class="line">            Traverser&lt;K,V&gt; it = <span class="keyword">new</span> Traverser&lt;K,V&gt;(t, t.length, <span class="number">0</span>, t.length);</div><div class="line">            <span class="keyword">for</span> (Node&lt;K,V&gt; p; (p = it.advance()) != <span class="keyword">null</span>; ) &#123;</div><div class="line">                s.writeObject(p.key);</div><div class="line">                s.writeObject(p.val);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        s.writeObject(<span class="keyword">null</span>);</div><div class="line">        s.writeObject(<span class="keyword">null</span>);</div><div class="line">        segments = <span class="keyword">null</span>; <span class="comment">// throw away</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>在多线程中，每一个Segment对象守护了一个HashEntry数组，当对ConcurrentHashMap中的元素修改时，在获取到对应的Segment数组角标后，都会对此Segment对象加锁，之后再去操作后面的HashEntry元素，这样每一个Segment对象下，都形成了一个小小的HashMap，在保证数据安全性的同时，又提高了同步的效率。只要不是操作同一个Segment对象的话，就不会出现线程等待的问题</p>
+<p><div class="-mob-share-ui-button -mob-share-open" style="margin-top:1rem;">分享</div></p>
+<p><div class="-mob-share-ui" style="display: none"><br>    <ul class="-mob-share-list"><br>        <li class="-mob-share-weibo"><p>新浪微博</p></li><br>        <li class="-mob-share-qzone"><p>QQ空间</p></li><br>        <li class="-mob-share-qq"><p>QQ好友</p></li><br>        <li class="-mob-share-douban"><p>豆瓣</p></li><br>        <li class="-mob-share-facebook"><p>Facebook</p></li><br>        <li class="-mob-share-twitter"><p>Twitter</p></li><br>    </ul><br>    <div class="-mob-share-close">取消</div><br></div></p>
+<p><div class="-mob-share-ui-bg"></div></p>
+<script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=224524e998b74"></script>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Collection/">Collection</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/26/CopyOnWriteArrayList/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">CopyOnWriteArrayList的简单使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap的介绍"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap遍历删除"><span class="nav-number">2.</span> <span class="nav-text">HashMap遍历删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap多线程操作"><span class="nav-number">3.</span> <span class="nav-text">ConcurrentHashMap多线程操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap结构"><span class="nav-number">4.</span> <span class="nav-text">ConcurrentHashMap结构</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+
+      	<div class="row">
+	      <p> Construido por <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2016 - 2017 ZhouXu&#39;Blog All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+  </div>
+
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            ZhouXu&#39;Blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2017 zhouxu All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>

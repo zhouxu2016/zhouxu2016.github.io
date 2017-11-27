@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://i.imgur.com/jITMzmE.jpg">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5621908-1e81a73a1afaebb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5621908-77efbdbf6c79fac9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-11-27T14:24:36.695Z">
+<meta property="og:updated_time" content="2017-11-27T14:31:28.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ConcurrentHashMap的简单使用">
 <meta name="twitter:description" content="ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能 1234567891011121314public interface Con">
@@ -103,11 +103,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categorías</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -123,7 +123,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -135,11 +135,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -204,17 +204,17 @@
 
 <h3 id="ConcurrentHashMap的介绍"><a href="#ConcurrentHashMap的介绍" class="headerlink" title="ConcurrentHashMap的介绍"></a>ConcurrentHashMap的介绍</h3><p>ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ConcurrentMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">Map</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//插入元素</span></div><div class="line">    <span class="function">V <span class="title">putIfAbsent</span><span class="params">(K key, V value)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//移除元素</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object key, Object value)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//替换元素</span></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">replace</span><span class="params">(K key, V oldValue, V newValue)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">//替换元素</span></div><div class="line">    <span class="function">V <span class="title">replace</span><span class="params">(K key, V value)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>(1). putIfAbsent: 与原有put方法不同的是,putIfAbsent方法中如果插入的key相同,则不替换原有的value值</p>
-<p>(2). remove: 与原有remove方法不同的是,新remove方法中增加了对value的判断,如果要删除的key–value不能与Map中原有的key–value对应上,则不会删除该元素</p>
-<p>(3). replace(K,V,V): 增加了对value值的判断,如果key–oldValue能与Map中原有的key–value对应上,才进行替换操作</p>
-<p>(4). replace(K,V): 与上面的replace不同的是,此replace不会对Map中原有的key–value进行比较,如果key存在则直接替换</p>
+<p>(1) putIfAbsent: 与原有put方法不同的是,putIfAbsent方法中如果插入的key相同,则不替换原有的value值</p>
+<p>(2) remove: 与原有remove方法不同的是,新remove方法中增加了对value的判断,如果要删除的key–value不能与Map中原有的key–value对应上,则不会删除该元素</p>
+<p>(3) replace(K,V,V): 增加了对value值的判断,如果key–oldValue能与Map中原有的key–value对应上,才进行替换操作</p>
+<p>(4) replace(K,V): 与上面的replace不同的是,此replace不会对Map中原有的key–value进行比较,如果key存在则直接替换</p>
 <a id="more"></a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger log = Logger.getLogger(ConcurrentMapDemo.class);</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line"></div><div class="line">        ConcurrentHashMap&lt;Object, Object&gt; concurrentHashMap = <span class="keyword">new</span> ConcurrentHashMap&lt;Object, Object&gt;();</div><div class="line"></div><div class="line">        concurrentHashMap.put(<span class="string">"name"</span>, <span class="string">"tom"</span>);</div><div class="line"></div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        putIfAbsent: 与原有put方法不同的是,putIfAbsent方法中如果插入的key相同,则不替换原有的value值</span></div><div class="line">        concurrentHashMap.putIfAbsent(<span class="string">"name"</span>, <span class="string">"lucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        remove: 与原有remove方法不同的是,新remove方法中增加了对value的判断,如果要删除的key--value不能与Map中原有的key--value对应上,</span></div><div class="line"><span class="comment">//        则不会删除该元素</span></div><div class="line">        concurrentHashMap.remove(<span class="string">"name"</span>, <span class="string">"lucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        replace(K,V,V): 增加了对value值的判断,如果key--oldValue能与Map中原有的key--value对应上,才进行替换操作</span></div><div class="line">        concurrentHashMap.replace(<span class="string">"name"</span>, <span class="string">"lucy"</span>, <span class="string">"newLucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line"></div><div class="line"><span class="comment">//        replace(K,V): 与上面的replace不同的是,此replace不会对Map中原有的key--value进行比较,如果key存在则直接替换</span></div><div class="line">        concurrentHashMap.replace(<span class="string">"name"</span>, <span class="string">"lucy"</span>);</div><div class="line">        log.info(<span class="string">"concurrentHashMap&gt;&gt;&gt;&gt;&gt;   "</span> + concurrentHashMap.toString());</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>其实,对于ConcurrentMap来说,我们更关注Map本身的操作,在并发情况下是如何实现数据安全的。在java.util.concurrent包中,ConcurrentMap的实现类主要以ConcurrentHashMap为主,接下来,我们具体来看下</p>
 <p>从线程安全的角度来说,HashTable已经是一个线程安全的HashMap,说起ConcurrentHashMap,就不得不先提及下HashMap在线程不安全的表现</p>
 <h3 id="HashMap遍历删除"><a href="#HashMap遍历删除" class="headerlink" title="HashMap遍历删除"></a>HashMap遍历删除</h3><p>HashMap或者ArrayList边遍历边删除数据会报java.util.ConcurrentModificationException异常</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    Map&lt;Long, String&gt; mReqPacket = <span class="keyword">new</span> HashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        mReqPacket.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        String value = entry.getValue();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            mReqPacket.remove(key);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>使用迭代器删除元素：</p>
+<p>使用迭代器删除元素,没有问题,不会出现异常 : </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">  Map&lt;Long, String&gt; mReqPacket = <span class="keyword">new</span> HashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        mReqPacket.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Iterator&lt;Entry&lt;Long, String&gt;&gt; iterator = mReqPacket.entrySet().iterator(); iterator.hasNext();) &#123;</div><div class="line">        Entry&lt;Long, String&gt; entry = iterator.next();</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            iterator.remove();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : mReqPacket.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ConcurrentHashMap允许一边更新、一边遍历，也就是说在Iterator对象遍历的时候，ConcurrentHashMap也可以进行remove,put操作，且遍历的数据会随着remove,put操作产出变化</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</div><div class="line">    Map&lt;Long, String&gt; conMap = <span class="keyword">new</span> ConcurrentHashMap&lt;Long, String&gt;();</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">        conMap.put(i, i + <span class="string">""</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : conMap.entrySet()) &#123;</div><div class="line">        <span class="keyword">long</span> key = entry.getKey();</div><div class="line">        <span class="keyword">if</span> (key &lt; <span class="number">10</span>) &#123;</div><div class="line">            conMap.remove(key);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry&lt;Long, String&gt; entry : conMap.entrySet()) &#123;</div><div class="line">        log.info(entry.getKey() + <span class="string">" "</span> + entry.getValue());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -283,7 +283,7 @@
   
   
     <a href="/2017/11/26/CopyOnWriteArrayList/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Viejo</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">CopyOnWriteArrayList的简单使用</div>
     </a>
   
@@ -296,7 +296,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">Inhalt</strong>
     
         <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap的介绍"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap遍历删除"><span class="nav-number">2.</span> <span class="nav-text">HashMap遍历删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap多线程操作"><span class="nav-number">3.</span> <span class="nav-text">ConcurrentHashMap多线程操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap结构"><span class="nav-number">4.</span> <span class="nav-text">ConcurrentHashMap结构</span></a></li></ol>
     
@@ -312,7 +312,7 @@
   <div class="container">
 
       	<div class="row">
-	      <p> Construido por <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
 	      <p id="copyRightEn">Copyright &copy; 2016 - 2017 ZhouXu&#39;Blog All Rights Reserved.</p>
 	      
 	      

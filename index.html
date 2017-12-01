@@ -287,8 +287,8 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/MpQpN6K.jpg" alt=""></center><br><br>### 多数据源的应用场景 ###<br><br>目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？<br>Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：<br><br>(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插件体系。<br><br>(2) DruidDataSource 高效可管理的数据库连接池<br><br>(3) SQLParser<br><br>当业务数据量达到了一定程度，DBA 需要合理配置数据库资源。即配置主库的机器高配置，把核心高频的数据放在主库上；把次要的数据放在从库，低配置。开源节流,就这个意思。把数据放在不同的数据库里，就需要通过不同的数据源进行操作数据。这里我们举个 springboot-mybatis-mutil-datasource 工程案例：<br><br>User 用户表在主库 master 上，地址表 city和work表分别在在从库 cluster 和cluster2上。下面实现获取根据用户名获取用户信息,地址信息,以及工作信息,使用RESTful API进行测试,从主库和从库中分别获取数据<br><br>
-        <!-- ### 多数据源的应用场景 ###目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插......  -->
+        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/MpQpN6K.jpg" alt=""></center><br><br><br><br>多数据源的应用场景<br><br>目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？<br>Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：<br><br>(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插件体系。<br><br>(2) DruidDataSource 高效可管理的数据库连接池<br><br>(3) SQLParser<br><br>当业务数据量达到了一定程度，DBA 需要合理配置数据库资源。即配置主库的机器高配置，把核心高频的数据放在主库上；把次要的数据放在从库，低配置。开源节流,就这个意思。把数据放在不同的数据库里，就需要通过不同的数据源进行操作数据。这里我们举个 springboot-mybatis-mutil-datasource 工程案例：<br><br>User 用户表在主库 master 上，地址表 city和work表分别在在从库 cluster 和cluster2上。下面实现获取根据用户名获取用户信息,地址信息,以及工作信息,使用RESTful API进行测试,从主库和从库中分别获取数据<br><br>
+        <!-- 多数据源的应用场景目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插件体系。(2) ......  -->
         <p class="article-more-link">
           <a href="/2017/12/01/springboot-mybatis/#more">weiter lesen</a>
         </p>

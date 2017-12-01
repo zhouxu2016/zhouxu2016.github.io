@@ -237,11 +237,11 @@
   <div class="intro-navigate">
       <p class="navigater-list">
         
-          <a id="beautifont" class="main-nav-link" href="/">Startseite</a>
+          <a id="beautifont" class="main-nav-link" href="/">Home</a>
         
-          <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
+          <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Categories</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -287,10 +287,10 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/MpQpN6K.jpg" alt=""></center><br><br><br><br>多数据源的应用场景<br><br>目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？<br>Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：<br><br>(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插件体系。<br><br>(2) DruidDataSource 高效可管理的数据库连接池<br><br>(3) SQLParser<br><br>当业务数据量达到了一定程度，DBA 需要合理配置数据库资源。即配置主库的机器高配置，把核心高频的数据放在主库上；把次要的数据放在从库，低配置。开源节流,就这个意思。把数据放在不同的数据库里，就需要通过不同的数据源进行操作数据。这里我们举个 springboot-mybatis-mutil-datasource 工程案例：<br><br>User 用户表在主库 master 上，地址表 city和work表分别在在从库 cluster 和cluster2上。下面实现获取根据用户名获取用户信息,地址信息,以及工作信息,使用RESTful API进行测试,从主库和从库中分别获取数据<br><br>
-        <!-- 多数据源的应用场景目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插件体系。(2) ......  -->
+        <div style="margin-top: 2rem"></div><br><center><img src="https://i.imgur.com/MpQpN6K.jpg" alt=""></center><br><br><br><br>### 多数据源的应用场景 ###<br><br>目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？<br>Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：<br><br>(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插件体系。<br><br>(2) DruidDataSource 高效可管理的数据库连接池<br><br>(3) SQLParser<br><br>当业务数据量达到了一定程度，DBA 需要合理配置数据库资源。即配置主库的机器高配置，把核心高频的数据放在主库上；把次要的数据放在从库，低配置。开源节流,就这个意思。把数据放在不同的数据库里，就需要通过不同的数据源进行操作数据。这里我们举个 springboot-mybatis-mutil-datasource 工程案例：<br><br>User 用户表在主库 master 上，地址表 city和work表分别在在从库 cluster 和cluster2上。下面实现获取根据用户名获取用户信息,地址信息,以及工作信息,使用RESTful API进行测试,从主库和从库中分别获取数据<br><br><br>
+        <!-- ### 多数据源的应用场景 ###目前，业界流行的数据操作框架是 Mybatis，那 Druid 是什么呢？Druid 是 Java 的数据库连接池组件。Druid 能够提供强大的监控和扩展功能。比如可以监控 SQL ，在监控业务可以查询慢查询 SQL 列表等。Druid 核心主要包括三部分：(1) DruidDriver 代理 Driver，能够提供基于 Filter－Chain 模式的插......  -->
         <p class="article-more-link">
-          <a href="/2017/12/01/springboot-mybatis/#more">weiter lesen</a>
+          <a href="/2017/12/01/springboot-mybatis/#more">Read More</a>
         </p>
       
     </div>
@@ -351,7 +351,7 @@
 Annotation注解处理器如果没有用来读取注解的方法和工作，那么注解也就不会比注释更有用处了。使用注解的过程中，很重要的一部分就是创建于使用注解处理器。Java SE5扩展了反射机制的API，以帮助程序员快速的构造自定义注解处理器。
 注解处理器类库Java使用Annotation接口来代表程序元素前面的注解，该接口是所有Annotation类型的父接口。除此之外，Java在ja......  -->
         <p class="article-more-link">
-          <a href="/2017/12/01/AnnotationUsed/#more">weiter lesen</a>
+          <a href="/2017/12/01/AnnotationUsed/#more">Read More</a>
         </p>
       
     </div>
@@ -416,7 +416,7 @@ Annotation自定义注解元注解的介绍在学习自定义注解之前，我�
 元注解：元注解的作用就是负责注解其他注解。Java5.0定义了4个标准的meta-annotation类型，它们被用来提供对其它 annotation类型作说明。Java5.0定义的元注解：
 (1) @Target(2) @Retention(3) @D......  -->
         <p class="article-more-link">
-          <a href="/2017/12/01/Annotation/#more">weiter lesen</a>
+          <a href="/2017/12/01/Annotation/#more">Read More</a>
         </p>
       
     </div>
@@ -480,7 +480,7 @@ Annotation自定义注解元注解的介绍在学习自定义注解之前，我�
 ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一个高效的HashMap,ConcurrentMap，它是一个接口，是一个能够支持并发访问的java.util.map集合,在原有java.util.map接口基础上又新提供了4种方法，进一步扩展了原有Map的功能
 1234567891011121314public interface ......  -->
         <p class="article-more-link">
-          <a href="/2017/11/27/ConcurrentHashMap/#more">weiter lesen</a>
+          <a href="/2017/11/27/ConcurrentHashMap/#more">Read More</a>
         </p>
       
     </div>
@@ -540,7 +540,7 @@ ConcurrentHashMap的介绍ConcurrentHashMap是一个线程安全，并且是一�
 
 CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExcep......  -->
         <p class="article-more-link">
-          <a href="/2017/11/26/CopyOnWriteArrayList/#more">weiter lesen</a>
+          <a href="/2017/11/26/CopyOnWriteArrayList/#more">Read More</a>
         </p>
       
     </div>
@@ -598,7 +598,7 @@ CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安�
 </ol>
         <!-- ExecutorService的简介接口 java.util.concurrent.ExecutorService 表述了异步执行的机制，并且可以让任务在后台执行。一个ExecutorService 实例因此特别像一个线程池。事实上，在 java.util.concurrent 包中的ExecutorService的实现就是一个线程池的实现ExecutorService的实现由于 Execu......  -->
         <p class="article-more-link">
-          <a href="/2017/11/23/ExecutorService/#more">weiter lesen</a>
+          <a href="/2017/11/23/ExecutorService/#more">Read More</a>
         </p>
       
     </div>
@@ -668,7 +668,7 @@ Java中创建线程主要有三种方式: 1.继承Thread类创建线程类
 （2）创建Thread子类的实例，即创建了线程对象。
 （......  -->
         <p class="article-more-link">
-          <a href="/2017/11/22/ThreadCreate/#more">weiter lesen</a>
+          <a href="/2017/11/22/ThreadCreate/#more">Read More</a>
         </p>
       
     </div>
@@ -728,7 +728,7 @@ Java中创建线程主要有三种方式: 1.继承Thread类创建线程类
 前言FastJson的介绍:JSON协议使用方便，越来越流行,JSON的处理器有很多,这里我介绍一下FastJson,FastJson是阿里的开源框架,被不少企业使用,是一个极其优秀的Json框架,Github地址: FastJson
 FastJson的特点:1.FastJson数度快,无论序列化和反序列化,都是当之无愧的fast2.功能强大(支持普通JDK类包括任意Java Bean......  -->
         <p class="article-more-link">
-          <a href="/2017/11/03/FastJsonDemo/#more">weiter lesen</a>
+          <a href="/2017/11/03/FastJsonDemo/#more">Read More</a>
         </p>
       
     </div>
@@ -790,7 +790,7 @@ FastJson的特点:1.FastJson数度快,无论序列化和反序列化,都是当�
 
 Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub......  -->
         <p class="article-more-link">
-          <a href="/2017/11/03/hello-world/#more">weiter lesen</a>
+          <a href="/2017/11/03/hello-world/#more">Read More</a>
         </p>
       
     </div>

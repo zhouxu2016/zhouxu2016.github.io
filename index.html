@@ -241,9 +241,9 @@
         
           <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Categorieën</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
         
-          <a id="beautifont" class="main-nav-link" href="/tags">Labels</a>
+          <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
           <a id="beautifont" class="main-nav-link" href="/about">About</a>
         
@@ -259,6 +259,67 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-Spring MVC ajax"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/15/Spring MVC ajax/">SpringMvc+ajax 实现json格式数据传递</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/15/Spring MVC ajax/" class="article-date">
+	  <time datetime="2017-12-15T07:07:28.479Z" itemprop="datePublished">2017-12-15</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/spring/">spring</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div style="margin-top: 2rem"></div></p>
+<center><img src="https://i.imgur.com/cNIDeCw.jpg" alt=""></center>
+
+
+
+<h3 id="使用ajax传递JSON对象"><a href="#使用ajax传递JSON对象" class="headerlink" title="使用ajax传递JSON对象"></a>使用ajax传递JSON对象</h3><h4 id="下面示例为ajax发送json对象-返回json格式数据"><a href="#下面示例为ajax发送json对象-返回json格式数据" class="headerlink" title="下面示例为ajax发送json对象,返回json格式数据"></a>下面示例为ajax发送json对象,返回json格式数据</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">          url: <span class="string">"api/user"</span>,</div><div class="line">          type: <span class="string">"POST"</span>,		</div><div class="line">          timeout: txnTimeOut,</div><div class="line">          <span class="keyword">async</span>: <span class="literal">true</span>,</div><div class="line">          dataType: <span class="string">"json"</span>,</div><div class="line">          data: &#123;<span class="attr">username</span> : <span class="string">"lucy"</span>&#125;,</div><div class="line">        <span class="comment">//注意：这里不能加下面这行，否则数据会传不到后台</span></div><div class="line">        <span class="comment">//contentType:'application/json;charset=UTF-8',</span></div><div class="line">          success: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">            <span class="keyword">if</span>($.txnIsSuzccess(e.respCode))&#123;</div><div class="line">              <span class="comment">//window.location.href=e.codeUrl;</span></div><div class="line">              <span class="built_in">console</span>.log(e);</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">              exceptionHandle(e);</div><div class="line">            &#125;</div><div class="line">          &#125;,</div><div class="line">          error: <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">            errorHandle(e);</div><div class="line">          &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>注意：这里不能加下面这行，否则数据会传不到后台</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">contentType:<span class="string">'application/json;charset=UTF-8'</span>,</div></pre></td></tr></table></figure>
+<h4 id="后台代码"><a href="#后台代码" class="headerlink" title="后台代码"></a>后台代码</h4>
+        <!-- 
+
+
+
+
+使用ajax传递JSON对象下面示例为ajax发送json对象,返回json格式数据123456789101112131415161718192021$.ajax(&#123;          url: "api/user",          type: "POST",		          timeout: txnTimeOut,          async: true, ......  -->
+        <p class="article-more-link">
+          <a href="/2017/12/15/Spring MVC ajax/#more">weiter lesen</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ajax/">ajax</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-springboot-mybatis"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">

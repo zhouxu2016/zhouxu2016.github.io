@@ -22,9 +22,7 @@
 <meta property="og:image" content="https://i.imgur.com/2aLOVM8.jpg">
 <meta property="og:image" content="https://i.imgur.com/mjX4TpP.png">
 <meta property="og:image" content="https://i.imgur.com/Qz8Idjw.png">
-<meta property="og:image" content="http://img.blog.csdn.net/20170117145928110?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20170117150336836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-11-26T04:56:58.603Z">
+<meta property="og:updated_time" content="2018-07-16T03:27:43.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CopyOnWriteArrayList的简单使用">
 <meta name="twitter:description" content="CopyOnWriteArrayList的介绍CopyOnWriteArrayList是ArrayList的一个线程安全的变体，其中所有可变操作（add、set等等）都是通过对底层数组进行一次新的复制来实现的, 一般在多线程操作时，一个线程对list进行修改。一个线程对list进行foreach时会出现,  java.util.ConcurrentModificationExceptio">
@@ -105,11 +103,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -125,7 +123,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -137,11 +135,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -222,15 +220,7 @@
 <p>运行上面的代码,没有报出,java.util.ConcurrentModificationException异常,说明了CopyOnWriteArrayList并发多线程的环境下,仍然能很好的工作</p>
 <h3 id="CopyOnWriteArrayList源码分析"><a href="#CopyOnWriteArrayList源码分析" class="headerlink" title="CopyOnWriteArrayList源码分析"></a>CopyOnWriteArrayList源码分析</h3><p>CopyOnWriteArrayList使用了一种叫写时复制的方法，当有新元素添加到CopyOnWriteArrayList时，先从原有的数组中拷贝一份出来，然后在新的数组做写操作，写完之后，再将原来的数组引用指向到新数组。</p>
 <p>当有新元素加入的时候，如下图，创建新数组，并往新数组中加入一个新元素,这个时候，array这个引用仍然是指向原数组的。</p>
-<p><div style="margin-top: 2rem"></div></p>
-<center><img src="http://img.blog.csdn.net/20170117145928110?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></center>
-
-
-
 <p>当元素在新数组添加成功后，将array这个引用指向新数组。</p>
-<p><div style="margin-top: 2rem"></div></p>
-<center><img src="http://img.blog.csdn.net/20170117150336836?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGluc29uZ2JpbjE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></center>
-
 <p>CopyOnWriteArrayList的整个add操作都是在锁的保护下进行的,这样做是为了避免在多线程并发add的时候，复制出多个副本出来,把数据搞乱了，导致最终的数组数据不是我们期望的。</p>
 <p>CopyOnWriteArrayList的add()方法操作的源代码如下: </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</div><div class="line">  <span class="comment">//1、先加锁</span></div><div class="line">  <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</div><div class="line">  lock.lock();</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    Object[] elements = getArray();</div><div class="line">    <span class="keyword">int</span> len = elements.length;</div><div class="line">    <span class="comment">//2、拷贝数组</span></div><div class="line">    Object[] newElements = Arrays.copyOf(elements, len + <span class="number">1</span>);</div><div class="line">    <span class="comment">//3、将元素加入到新数组中</span></div><div class="line">    newElements[len] = e;</div><div class="line">    <span class="comment">//4、将array引用指向到新数组</span></div><div class="line">    setArray(newElements);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    <span class="comment">//5、解锁</span></div><div class="line">    lock.unlock();</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -286,7 +276,7 @@
 <nav id="article-nav">
   
     <a href="/2017/11/27/ConcurrentHashMap/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           ConcurrentHashMap的简单使用
@@ -296,7 +286,7 @@
   
   
     <a href="/2017/11/23/ExecutorService/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">ExecutorService的理解与简单使用</div>
     </a>
   
@@ -309,7 +299,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">Inhalt</strong>
     
         <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList的介绍"><span class="nav-number">1.</span> <span class="nav-text">CopyOnWriteArrayList的介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读线程"><span class="nav-number">2.</span> <span class="nav-text">读线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写线程"><span class="nav-number">3.</span> <span class="nav-text">写线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行代码"><span class="nav-number">4.</span> <span class="nav-text">运行代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果"><span class="nav-number">5.</span> <span class="nav-text">运行结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList源码分析"><span class="nav-number">6.</span> <span class="nav-text">CopyOnWriteArrayList源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList的使用场景"><span class="nav-number">7.</span> <span class="nav-text">CopyOnWriteArrayList的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CopyOnWriteArrayList总结"><span class="nav-number">8.</span> <span class="nav-text">CopyOnWriteArrayList总结</span></a></li></ol>
     
